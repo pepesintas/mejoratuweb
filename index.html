@@ -256,7 +256,8 @@ footer p{margin:0 0 5px;}
 .pie-h{border-top:1px solid var(--line);margin-top:34px;padding-block:26px 52px;}
 .pie-h .fila{display:flex;justify-content:space-between;align-items:center;gap:16px 28px;flex-wrap:wrap;}
 .pie-h .marca-h{display:inline-flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font-size:17px;font-weight:500;letter-spacing:-.02em;}
-.pie-h .marca-h svg{width:21px;height:21px;stroke:var(--accent);fill:none;stroke-width:1.5;}
+.pie-h .marca-h img,
+.pie-h .marca-h svg{width:24px;height:24px;object-fit:contain;flex:0 0 auto;stroke:var(--accent);fill:none;stroke-width:1.5;}
 .pie-h nav{display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
 .pie-h a:not(.marca-h){color:var(--ink-3);text-decoration:none;font-size:13.5px;transition:color .2s;}
 .pie-h a:not(.marca-h):hover{color:var(--ink);}
@@ -442,7 +443,7 @@ img{max-width:100%;height:auto;}
   </div>
 
   <!-- ANUNCIO LATERAL — solo se ve en escritorio -->
-  <div class="ad">Hueco de anuncio</div>
+  <div class="ad" data-anuncio hidden><!-- Aquí irá el bloque de AdSense cuando aprueben la cuenta. Hasta entonces va oculto: una web con recuadros vacíos que ponen "hueco de anuncio" parece sin terminar, y eso lo penaliza la revisión. --></div>
 
 </aside>
 
@@ -450,6 +451,7 @@ img{max-width:100%;height:auto;}
 
 <section class="venta">
 
+<div class="filete" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11 13 15 21 6"/><path d="M15 6h6v6"/></svg></div>
 <h2>Qué más hay aquí</h2>
 
 <p>Herramientas gratis y guías para que un negocio pequeño entienda por qué no lo encuentran en internet. Sin registros, sin dejar el correo y sin que te llame nadie después.</p>
@@ -463,6 +465,7 @@ img{max-width:100%;height:auto;}
 </ul>
 
 
+<div class="filete" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11 13 15 21 6"/><path d="M15 6h6v6"/></svg></div>
 <h2>Preguntas frecuentes</h2>
 
 <details>

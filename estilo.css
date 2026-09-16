@@ -273,7 +273,10 @@ details p{margin:.8rem 0 0;font-size:.98rem;color:var(--ink-soft);}
 .pie-blurb{margin:clamp(1.15rem,2.4vh,1.9rem) 0 0;max-width:34ch;line-height:1.62;font-size:.94rem;color:var(--ink-soft);}
 .contacto-lista{list-style:none;margin:clamp(1.15rem,2.4vh,1.9rem) 0 0;padding:0;display:flex;flex-direction:column;gap:clamp(.6rem,1.2vh,.95rem);}
 .contacto-lista li{display:flex;align-items:center;gap:.85rem;margin:0;font-size:.92rem;}
-.contacto-lista svg{width:19px;height:19px;flex:0 0 auto;}
+.contacto-lista svg{width:19px;height:19px;flex:0 0 auto;
+  /* sin esto los iconos salen como cuadrados negros: un <svg> sin
+     fill declarado se rellena de negro por defecto. */
+  fill:none;stroke:currentColor;stroke-width:1.6;}
 .contacto-lista a{text-decoration:none;}
 .contacto-lista a:hover{text-decoration:underline;text-underline-offset:3px;}
 .pie-col h3,.pie-boletin h3{
@@ -307,7 +310,7 @@ details p{margin:.8rem 0 0;font-size:.98rem;color:var(--ink-soft);}
 .pie-social{display:flex;gap:clamp(.9rem,1.5vw,1.5rem);align-items:center;}
 .pie-social a{display:inline-grid;place-items:center;transition:opacity .2s ease,transform .2s ease;}
 .pie-social a:hover{opacity:.65;transform:translateY(-2px);}
-.pie-social svg{width:26px;height:26px;}
+.pie-social svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.6;}
 .pie-legal{display:flex;gap:clamp(1.15rem,2.6vw,3rem);flex-wrap:wrap;align-items:center;}
 .pie-legal a,.pie-legal span{font-size:.88rem;text-decoration:none;color:var(--ink-soft);}
 .pie-legal a:hover{text-decoration:underline;text-underline-offset:3px;}
@@ -351,3 +354,106 @@ details p{margin:.8rem 0 0;font-size:.98rem;color:var(--ink-soft);}
 }
 
 img{max-width:100%;height:auto;}
+
+/* ═══════════════════════════════════════════════════════════
+   AMBIENTE — tinta sobre papel.
+
+   Tres capas decorativas, todas aria-hidden y sin capturar el
+   ratón: el grano del papel, el cielo con los pájaros sobre la
+   cabecera, y la cordillera que cierra la página antes del pie.
+
+   Las inserta ambiente.js para no repetir el mismo SVG en las
+   catorce páginas. Son adorno: sin JavaScript la web se lee
+   exactamente igual.
+
+   OJO con el apilado. `isolation:isolate` en el body es lo que
+   hace que un hijo en z-index:-1 se pinte por encima del fondo
+   del body pero por debajo del texto. Sin eso, las capas tapan
+   el contenido y la página se ve en blanco.
+   ═══════════════════════════════════════════════════════════ */
+
+body{position:relative;isolation:isolate;}
+
+/* grano de papel: un mosaico diminuto, no una imagen a pantalla completa */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='.055'/%3E%3C/svg%3E");
+}
+
+.cielo{
+  position:absolute;top:0;left:0;right:0;
+  height:clamp(420px,78vh,760px);
+  z-index:-1;pointer-events:none;overflow:hidden;
+}
+.cielo svg{position:absolute;inset:0;width:100%;height:100%;}
+
+/* la cordillera va en el flujo, justo antes del pie */
+.paisaje{
+  margin:clamp(1.5rem,4vh,3rem) 0 0;
+  pointer-events:none;line-height:0;
+}
+.paisaje svg{display:block;width:100%;height:auto;}
+
+.tinta{stroke:#175A67;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.relleno{fill:#175A67;stroke:none;}
+
+/* ── pájaros ───────────────────────────────────────────────── */
+.ave{stroke:#175A67;fill:none;stroke-width:1.6;stroke-linecap:round;}
+.vuela{animation:vuela 96s linear infinite;}
+.vuela-2{animation-duration:132s;animation-delay:-38s;}
+.vuela-3{animation-duration:78s;animation-delay:-55s;}
+.aletea{animation:aletea 7s ease-in-out infinite;}
+@keyframes vuela{
+  from{transform:translate(-160px,0);}
+  to{transform:translate(1620px,-70px);}
+}
+@keyframes aletea{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-9px);}
+}
+
+/* ── la línea que sube: los puntos viajan hacia arriba ─────── */
+.asciende{
+  stroke:#175A67;fill:none;stroke-width:2;stroke-linecap:round;
+  stroke-dasharray:2 10;opacity:.34;
+  animation:asciende 5.5s linear infinite;
+}
+@keyframes asciende{ to{ stroke-dashoffset:-120; } }
+.bruma{animation:bruma 17s ease-in-out infinite;}
+@keyframes bruma{ 0%,100%{opacity:.5;} 50%{opacity:.9;} }
+
+/* En pantallas estrechas el trazo ascendente se cruza con el
+   titular: se queda solo el cielo y los pájaros. */
+@media (max-width:900px){ .solo-ancho{display:none;} }
+
+/* ── marca ─────────────────────────────────────────────────── */
+/* el trazo del logo se estira un poco al pasar por encima */
+.nav .marca img{transition:transform .5s cubic-bezier(.22,1,.36,1);}
+.nav .marca:hover img{transform:translate(1px,-2px);}
+
+/* ── filete ornamentado entre secciones ────────────────────── */
+.filete{
+  display:flex;align-items:center;gap:1rem;
+  margin:clamp(3rem,7vh,4.5rem) 0;color:var(--ink-faint);
+}
+.filete::before,.filete::after{
+  content:"";height:1px;flex:1;
+  background:linear-gradient(90deg,transparent,var(--line-2),transparent);
+}
+.filete svg{width:22px;height:22px;flex:0 0 auto;opacity:.7;}
+
+/* ── botones: un milímetro de vida ─────────────────────────── */
+.btn,.btn-ghost{transition:background .2s ease,color .2s ease,transform .2s ease;}
+.btn:hover,.btn-ghost:hover{transform:translateY(-1px);}
+
+@media (prefers-reduced-motion:reduce){
+  .vuela,.aletea,.asciende,.bruma{animation:none !important;}
+  .nav .marca:hover img,.btn:hover,.btn-ghost:hover{transform:none;}
+}
+
+/* En móvil la cordillera quedaría en una tira de 80px: le damos
+   altura fija y dejamos que recorte por los lados. */
+@media (max-width:700px){
+  .paisaje svg{height:132px;}
+}
