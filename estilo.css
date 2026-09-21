@@ -457,3 +457,17 @@ body::before{
 @media (max-width:700px){
   .paisaje svg{height:132px;}
 }
+
+/* ── objetivos táctiles ────────────────────────────────────
+   Un enlace de texto suelto mide 16px de alto: con el dedo en
+   el móvil se falla. Les damos altura real sin separarlos más
+   de la cuenta a la vista. */
+.nav a:not(.marca){display:inline-block;padding-block:.5rem;}
+.pie-col a,.pie-legal a{padding-block:.3rem;}
+.contacto-lista a{display:inline-block;padding-block:.25rem;}
+@media (max-width:720px){
+  .nav{padding-block:.8rem;}
+  .nav ul{gap:.1rem 1.3rem;align-items:center;}
+  .nav a:not(.marca){padding-block:.62rem;}
+  .pie-col a,.pie-legal a{padding-block:.45rem;}
+}

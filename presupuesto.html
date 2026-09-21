@@ -203,7 +203,10 @@ footer p{margin:0 0 6px;}
 .pie-h .marca-h{display:inline-flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font-size:17px;font-weight:500;letter-spacing:-.02em;}
 .pie-h .marca-h img,
 .pie-h .marca-h svg{width:24px;height:24px;object-fit:contain;flex:0 0 auto;stroke:var(--brass);fill:none;stroke-width:1.5;}
-.pie-h nav{display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
+.pie-h nav{display:flex;gap:4px 20px;flex-wrap:wrap;align-items:center;}
+/* altura para el dedo: un enlace de 13px mide 21px de alto y se falla. */
+.pie-h a:not(.marca-h){display:inline-block;padding-block:.45rem;}
+.pie-h .ig{padding:.35rem;}
 .pie-h a:not(.marca-h){color:var(--ink-soft);text-decoration:none;font-size:13.5px;transition:color .2s;}
 .pie-h a:not(.marca-h):hover{color:var(--ink);}
 .pie-h .ig{display:inline-grid;place-items:center;}
@@ -212,6 +215,10 @@ footer p{margin:0 0 6px;}
 .pie-h .nota p{margin:0 0 6px;}
 .nav .marca img{width:34px;height:34px;object-fit:contain;flex:0 0 auto;}
 img{max-width:100%;height:auto;}
+
+@media (max-width:560px){
+  .num,.eyebrow,.note{font-size:12px;}
+}
 </style>
 <script type="application/ld+json">
 {
