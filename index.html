@@ -841,7 +841,19 @@ img{max-width:100%;height:auto;}
     go.disabled = true; go.textContent = 'Analizando\u2026';
 
     fetch('/api/auditar?url=' + encodeURIComponent(v))
-      .then(function(r){ return r.json().then(function(d){
+      .then(function(r){ return r.text().then(function(txt){
+        // Leemos texto y luego intentamos interpretarlo. Si se llama a
+        // r.json() directamente y el servidor responde otra cosa —un 404
+        // en texto plano, una página de error del proveedor, un tiempo
+        // agotado— revienta con «Unexpected token» y ese galimatías
+        // acaba en pantalla. Al visitante hay que decirle qué ha pasado.
+        var d = null;
+        try { d = JSON.parse(txt); } catch(e){}
+        if(!d){
+          throw new Error(r.status === 404
+            ? 'El analizador no está disponible ahora mismo. Vuelve a intentarlo en un rato.'
+            : 'El analizador ha fallado (error ' + r.status + '). Vuelve a intentarlo en un rato.');
+        }
         if(!r.ok) throw new Error(d.error || 'No se ha podido analizar esa web.');
         return d;
       }); })
@@ -850,7 +862,13 @@ img{max-width:100%;height:auto;}
         go.disabled = false; go.textContent = 'Analizar otra vez';
         document.querySelector('.score').scrollIntoView({behavior:'smooth',block:'start'});
       })
-      .catch(function(e){ fallo(e.message); });
+      .catch(function(e){
+        // Un fetch que no llega a salir (sin red, dominio caído) da un
+        // TypeError con el texto en inglés del navegador.
+        fallo(e && e.name === 'TypeError'
+          ? 'No se ha podido conectar. Comprueba tu conexión y vuelve a intentarlo.'
+          : (e && e.message) || 'No se ha podido analizar esa web.');
+      });
   }
 
   go.addEventListener('click', auditar);
